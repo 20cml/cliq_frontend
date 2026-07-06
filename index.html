@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Cliquo — Campus Hangouts (Dark)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Baloo+2:wght@700;800&family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+*{box-sizing:border-box;-webkit-font-smoothing:antialiased;margin:0;padding:0}
+body{font-family:'Inter',system-ui,sans-serif;background:#FFFFFF}
+input,textarea{font-family:inherit;outline:none}
+input::placeholder,textarea::placeholder{color:#666}
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator{display:none;-webkit-appearance:none}
+input[type="date"],input[type="time"]{-webkit-appearance:none;appearance:none}
+.ns::-webkit-scrollbar{width:0;height:0}.ns{scrollbar-width:none}
+.ecard:hover{background:rgba(255,255,255,.06)!important}
+.ecard.mine:hover{background:rgba(255,255,255,.1)!important}
+
+*{accent-color:#FF1414}
+:root{
+--bg:#1c1c1c;
+--surface:rgba(255,255,255,.07);--surfaceH:rgba(255,255,255,.12);
+--ink:#FFFFFF;--ink2:#A0A0A0;--ink3:#505050;
+--yellow:#FF1414;--red:#2D8A4E;--blue:#FF69B4;--purple:#4A78F5;
+--hair:rgba(255,255,255,.08);
+}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes slideUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pushIn{from{transform:translateX(100%)}to{transform:translateX(0)}}
+@keyframes slideSheet{from{transform:translateY(100%)}to{transform:translateY(0)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes toastIn{from{opacity:0;transform:translate(-50%,-50%) scale(.9)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+@keyframes splashIn{0%{opacity:0;transform:scale(.8)}100%{opacity:1;transform:scale(1)}}
+@keyframes blurUp{0%{opacity:0;filter:blur(12px);transform:translateY(16px)}100%{opacity:1;filter:blur(0);transform:translateY(0)}}
+@keyframes marquee{from{transform:translateX(-50%)}to{transform:translateX(0)}}
+@keyframes logoTap{0%{transform:scale(1)}45%{transform:scale(1)}58%{transform:scale(.88)}75%{transform:scale(1.04)}100%{transform:scale(1)}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+const EVENTS=[
+{id:999,title:'FIFA Fan Festival',host:'Jamie Chen',meta:'CS · 2027',cat:'Social',when:'Wed, Jul 2',time:'11 AM',end:'3 PM',loc:'Fort York & The Bentway',cap:50,filled:38,today:false,week:true,weekend:false,desc:"Big screen matches, food trucks, and good energy at Fort York. Open to everyone — no tickets needed, just show up.",tags:['FIFA','WorldCup','Soccer','Festival']},
+{id:6,title:'Clothing Swap & Sustainable Fashion Market',host:'Lena Cho',meta:'Fine Arts · 2026',cat:'Social',showup:55,when:'Sat, Jul 5',time:'11 AM',end:'4 PM',loc:'Hart House Circle',cap:40,filled:40,today:false,week:true,weekend:true,desc:"Bring clothes you don't wear anymore and swap them for something new. Local sustainable brands will also be selling. Zero waste, all vibes.",tags:['ClothingSwap','Sustainable','Fashion','ThriftFlip']},
+{id:3,title:'Board Game Night',host:'Marco Reyes',meta:'Kinesiology · 2026',cat:'Social',showup:65,when:'Sat, Oct 17',time:'7 PM',end:'10 PM',loc:'Student Centre',cap:16,filled:11,today:false,week:true,weekend:true,desc:"Playing Catan and a few party games. Snacks provided, come hang out and meet some new people!",tags:['BoardGames','Catan','Social']},
+{id:7,title:'Sunrise Run Club',host:'Amara Diallo',meta:'Nursing · 2028',cat:'Sports',when:'Fri, Aug 1',time:'7 AM',end:'8 AM',loc:'Campus Gates',cap:15,filled:9,today:true,week:true,weekend:false,desc:"Easy 5K loop around campus to start the week right. All paces welcome — we regroup at the top of the hill and grab smoothies after.",tags:['Running','Fitness','Morning']},
+{id:8,title:'Hackathon Team Formation',host:'Devon Park',meta:'CS · 2027',cat:'Study',when:'Sat, Nov 2',time:'12 PM',end:'2 PM',loc:'Innovation Hub',cap:24,filled:5,today:false,week:true,weekend:true,desc:"Looking for teammates before next weekend's hackathon. Pitch your idea or join one — designers, coders, and first-timers all welcome.",tags:['Hackathon','Coding','Teams']},
+{id:5,title:'Data Structure Study Sprint',host:'Jordan Lee',meta:'Commerce · 2027',cat:'Study',showup:67,when:'Thu, Jul 3',time:'2 PM',end:'5 PM',loc:'Maxwell Library · Rm 204',cap:12,filled:8,today:false,week:true,weekend:false,desc:"Grinding through data structures problem sets before the quiz. Bring your laptop and questions — we'll work through them together.",tags:['StudyGroup','Coding','DataStructures']},
+{id:1,title:'Linear Algebra Midterm Prep',host:'Alex Kim',meta:'SE · 2028',cat:'Study',when:'Wed, Oct 14',time:'2 PM',end:'4 PM',loc:'Maxwell Library · Rm 204',cap:8,filled:4,today:false,week:true,weekend:false,desc:"Going over the numerical linear algebra practice problems before our midterm next week. I'll book a room and bring coffee.",tags:['LinearAlgebra','StudyGroup','MidtermPrep']},
+{id:4,title:'Sunset Yoga & Mindfulness Session',host:'Sara Okafor',meta:'Life Sci · 2028',cat:'Sports',showup:34,when:'Fri, Jul 4',time:'6 PM',end:'7:30 PM',loc:'King\'s College Circle',cap:25,filled:18,today:false,week:true,weekend:false,desc:"Unwind with a guided yoga flow and meditation as the sun sets over campus. Bring a mat or towel. All levels welcome — beginners especially!",tags:['Yoga','Mindfulness','Wellness','Sunset']},
+{id:2,title:'Monet to Matisse',host:'Priya Nair',meta:'History · 2027',cat:'Arts',when:'Sun, Jul 6',time:'1 PM',end:'4 PM',loc:'Art Gallery of Ontario',cap:15,filled:10,today:false,week:true,weekend:true,desc:"Exploring the Impressionist collection at the AGO. We'll grab coffee at the gallery café after. Great for art lovers and first-timers alike!",tags:['Art','AGO','Impressionism','Gallery']},
+{id:10,title:'Software Requirements — Usability Test',host:'Camila Lee',meta:'CS · 2027',cat:'Study',when:'Wed, Jul 2',time:'2 PM',end:'4 PM',loc:'McMaster University · Rm 400',cap:12,filled:3,today:false,week:false,weekend:false,desc:"Running usability tests for our SFWRTECH 3RQ3 project. Come test interactive prototypes and give feedback — great practice for your own milestones.",tags:['Usability','Testing','SFWRTECH'],mine:true},
+{id:11,title:'Artificial Intelligence Talk',host:'Victor Leme',meta:'CS · 2027',cat:'Study',when:'Wed, Sep 2',time:'7 PM',end:'9 PM',loc:'Hilton Hotel Downtown',cap:50,filled:32,today:false,week:false,weekend:false,desc:"Guest speaker series on the future of AI in software engineering. Networking reception after — open to all students.",tags:['AI','Talk','Networking']},
+{id:12,title:'Magic Cube Competition',host:'Lisa Park',meta:'CS · 2027',cat:'Study',when:'Fri, Sep 18',time:'5 PM',end:'8 PM',loc:'Sheraton Hotel',cap:30,filled:18,today:false,week:false,weekend:false,desc:"Speedcubing tournament open to all skill levels. Bring your own cube or borrow one. Prizes for top 3 — beginners welcome!",tags:['Rubiks','Competition','Puzzle']},
+{id:13,title:'System Design Study',host:'Eli Mohan',meta:'CS · 2027',cat:'Study',when:'Mon, Nov 16',time:'10 AM',end:'12 PM',loc:'Maxwell Library · Rm 100',cap:15,filled:6,today:false,week:false,weekend:false,desc:"Deep dive into system design patterns — load balancers, caching, database sharding. Preparing for technical interviews together.",tags:['SystemDesign','Interview','Architecture']},
+{id:14,title:'Data Center Tour — Microsoft',host:'Hugo Paz',meta:'CS · 2027',cat:'Study',when:'Tue, Dec 1',time:'3 PM',end:'5 PM',loc:'Microsoft Downtown',cap:20,filled:14,today:false,week:false,weekend:false,desc:"Exclusive tour of Microsoft's downtown data center. Learn about cloud infrastructure, networking, and career opportunities. Limited spots!",tags:['Microsoft','DataCenter','CloudComputing']},
+];
+
+const CC={Study:'#888',Social:'#888',Sports:'#888',Arts:'#888'};
+
+const S={tab:'home',detail:null,create:false,hostPopup:null,query:'',filter:'all',joined:{999:true,6:true,2:true,7:true,10:true},toast:null,splash:true,splashFade:false,zoom:(()=>{const v=localStorage.getItem('cliquoZoom');return v?(v==='fit'?'fit':parseFloat(v)):'fit'})(),
+cTitle:'',cDate:'',cTime:'',cAmpm:'PM',cLoc:'',cCap:8,cDesc:'',cCat:'Social',cTags:[],cTag:'',publishing:false,userEvents:[]};
+
+let toastT=null,focusK=null,focusP=0;
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function allEv(){return S.userEvents.concat(EVENTS)}
+function filled(e){return Math.min(e.cap,e.filled+(S.joined[e.id]?1:0))}
+function pct(e){return Math.round(filled(e)/e.cap*100)}
+function logoBlock(scale,full){if(full===undefined)full=true;return `<div style="position:relative;display:inline-flex">
+  <div style="position:relative;display:flex;align-items:center;gap:-4px">
+    <img src="logo/letter-C.png" style="height:${64*scale}px;width:auto" />
+    <img src="logo/letter-L.png" style="height:${64*scale}px;width:auto;margin-left:${-5*scale}px" />
+    <img src="logo/letter-I.png" style="height:${64*scale}px;width:auto;margin-left:${-5*scale}px" />
+    <img src="logo/letter-Q.png" style="height:${78*scale}px;width:auto;margin-left:${-8*scale}px;transform:translateY(${4*scale}px)" />
+  </div>
+</div>`}
+function matches(e){
+  const q=S.query.trim().toLowerCase();
+  if(S.filter==='today'&&!e.today)return false;
+  if(S.filter==='weekend'&&!e.weekend)return false;
+  if(S.filter==='week'&&!e.week)return false;
+  if(!q)return true;
+  return(e.title+' '+e.host+' '+e.loc+' '+e.desc+' '+e.cat).toLowerCase().includes(q);
+}
+function toast(m){}
+function saveScroll(){const s=document.getElementById('feed');if(s)S._scrollTop=s.scrollTop;}
+function join(id,ev){
+  saveScroll();
+  if(!S.joined[id]){S.joined[id]=true}else{delete S.joined[id]}
+  render();
+}
+function fitScale(){return Math.max(.3,Math.min(1,(innerHeight-56)/832,(innerWidth-32)/384))}
+function effScale(){return S.zoom==='fit'?fitScale():S.zoom}
+function setZoom(d){if(d==='fit'){S.zoom='fit';localStorage.setItem('cliquoZoom','fit');render();return}S.zoom=Math.round(Math.min(1,Math.max(.3,effScale()+d*.1))*100)/100;localStorage.setItem('cliquoZoom',String(S.zoom));render()}
+
+function card(e){
+  const j=!!S.joined[e.id],f=filled(e),p=pct(e),cc=CC[e.cat]||'var(--ink2)';
+  return `
+  <div class="ecard${e.mine?' mine':''}" style="animation:slideUp .3s ease both;padding:16px 20px;margin-left:4px;border-bottom:1px solid var(--hair);${e.mine?'background:#FF1414':''}">
+    <div style="display:flex;align-items:baseline;gap:6px;margin-bottom:6px">
+      ${e.cat==='Sports'?`<img src="logo/caca.png" style="height:17px;width:auto" />`:e.cat==='Social'?`<img src="logo/hearting.png" style="height:17px;width:auto" />`:e.cat==='Arts'?`<img src="logo/lelele.png" style="height:19px;width:auto" />`:e.cat==='Study'?`<img src="logo/cucu.png" style="height:17px;width:auto" />`:`<span style="font-size:10px;font-weight:800;color:${cc};text-transform:uppercase;letter-spacing:1px">${e.cat}</span>`}
+      <span style="font-size:10px;color:var(--ink3)">·</span>
+      <span style="font-size:13px;color:var(--ink2)">${esc(e.when)} · ${esc(e.time)}</span>
+    </div>
+    <div style="display:flex;align-items:flex-start;gap:12px">
+      <div data-act="open" data-id="${e.id}" style="cursor:pointer;flex:1;min-width:0">
+        <div style="font-family:'Geist',sans-serif;font-size:15px;font-weight:600;color:var(--ink);letter-spacing:-.4px;line-height:1.2">${esc(e.title)}</div>
+        <div style="font-size:12px;color:var(--ink2);margin-top:5px"><span data-act="showhost" data-id="${e.id}" style="cursor:pointer;color:var(--purple);text-decoration:underline;text-decoration-style:dotted;text-decoration-color:rgba(255,255,255,.35);text-underline-offset:2px">${esc(e.host)}</span> · ${esc(e.loc)}</div>
+      </div>
+      ${j
+        ?`<div data-act="join" data-id="${e.id}" style="flex-shrink:0;width:26px;height:26px;display:flex;align-items:center;justify-content:center;cursor:pointer;margin-top:-6px;margin-right:6px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L19 7" stroke="#4A78F5" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>`
+        :`<div data-act="join" data-id="${e.id}" style="position:relative;flex-shrink:0;width:26px;height:26px;margin-top:-6px;margin-right:6px;cursor:pointer">
+          <div style="position:absolute;left:50%;top:-3px;transform:translateX(-50%);width:2px;height:8px;background:rgba(255,255,255,.35);border-radius:1px"></div>
+          <div style="position:absolute;left:50%;bottom:-3px;transform:translateX(-50%);width:2px;height:8px;background:rgba(255,255,255,.35);border-radius:1px"></div>
+          <div style="position:absolute;top:50%;left:-3px;transform:translateY(-50%);width:8px;height:2px;background:rgba(255,255,255,.35);border-radius:1px"></div>
+          <div style="position:absolute;top:50%;right:-3px;transform:translateY(-50%);width:8px;height:2px;background:rgba(255,255,255,.35);border-radius:1px"></div>
+          <div style="width:26px;height:26px;border-radius:50%;border:2px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center"><svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#FF1414" stroke-width="2.5" stroke-linecap="round"/></svg></div>
+        </div>`
+      }
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;margin-top:8px">
+      <div style="flex:1;height:3px;background:var(--surface);border-radius:2px;overflow:hidden"><div style="height:100%;width:${p}%;background:${cc};border-radius:2px"></div></div>
+      <span style="font-size:10px;font-weight:700;color:var(--ink2);flex-shrink:0;margin-right:4px">${f}/${e.cap}</span>
+    </div>
+  </div>`;
+}
+
+function homeScreen(){
+  const monOrder={Jan:1,Feb:2,Mar:3,Apr:4,May:5,Jun:6,Jul:7,Aug:8,Sep:9,Oct:10,Nov:11,Dec:12};
+  const sortKey=w=>{const mon=w.match(/Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec/);const day=w.match(/\d+/);return(monOrder[mon?.[0]]||0)*100+(day?parseInt(day[0]):0)};
+  let feed=allEv().filter(e=>matches(e)&&!e.mine).sort((a,b)=>sortKey(a.when)-sortKey(b.when));
+  const chips=[['all','All'],['today','Today'],['week','Week'],['weekend','Weekend']];
+  return `
+  <img src="logo/string3.png" style="position:absolute;left:0;top:calc(50% + 15.12px);transform:translateY(-50%);height:60%;width:auto;z-index:3;pointer-events:none" />
+  <img src="logo/string3.png" style="position:absolute;right:0;top:calc(50% + 15.12px);transform:translateY(-50%);height:60%;width:auto;z-index:3;pointer-events:none" />
+  <div id="feed" class="ns" style="position:absolute;inset:0;overflow-y:auto;padding:28px 0 76px">
+    <div style="padding:0 20px">
+      <div style="display:flex;align-items:flex-end;justify-content:center;position:relative;z-index:2;padding-top:26px;margin-bottom:-30px">
+        <div style="position:absolute;inset:0;top:14px;overflow:hidden;z-index:0;pointer-events:none;display:flex;align-items:center">
+          <span style="display:inline-block;white-space:nowrap;font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.18);animation:marquee 9s linear infinite">Just show up · Just show up · Just show up · Just show up ·</span>
+        </div>
+        <div data-act="create" style="position:absolute;left:-4px;bottom:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:8px;z-index:2">
+          <img src="logo/apple.png" style="width:20px;height:20px" />
+        </div>
+        ${logoBlock(.58,false)}
+        <div style="position:absolute;right:0;bottom:18px;cursor:pointer;display:flex;align-items:center;justify-content:center">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h16M4 18h16" stroke="var(--ink)" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+      </div>
+      <div style="position:relative;z-index:1;margin-top:23px;display:flex;align-items:center;gap:8px;background:var(--surface);border-radius:20px;padding:14px 16px">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="var(--ink3)" stroke-width="2"/><path d="m20 20-3-3" stroke="var(--ink3)" stroke-width="2" stroke-linecap="round"/></svg>
+        <input id="si" value="${esc(S.query)}" data-inp="query" placeholder="Search events" style="flex:1;border:0;background:transparent;font-size:13px;color:var(--ink);min-width:0" />
+        ${S.query?`<div data-act="clear" style="cursor:pointer;width:16px;height:16px;border-radius:50%;background:var(--ink3);display:flex;align-items:center;justify-content:center"><svg width="7" height="7" viewBox="0 0 10 10"><path d="M1 1l8 8M9 1l-8 8" stroke="var(--bg)" stroke-width="2" stroke-linecap="round"/></svg></div>`:''}
+      </div>
+      <div style="display:flex;gap:6px;margin-top:10px">
+        ${chips.map(([k,l])=>{const bg=S.filter===k?'var(--yellow)':'transparent';const cl=S.filter===k?'#0A0A0A':'var(--ink2)';return`<button data-act="filter" data-id="${k}" style="flex:1;text-align:center;border:${S.filter===k?'none':'1px solid rgba(255,255,255,.2)'};background:${bg};color:${cl};font-size:11px;font-weight:700;padding:8px 16px;border-radius:20px;cursor:pointer;font-family:inherit;text-transform:uppercase;letter-spacing:.5px">${l}</button>`}).join('')}
+      </div>
+    </div>
+    ${feed.length===0
+      ?`<div style="text-align:center;padding:60px 30px;color:var(--ink3)"><div style="font-size:14px;font-weight:700;color:var(--ink)">No events found</div></div>`
+      :`<div style="margin-top:8px">${feed.map(card).join('')}</div>`
+    }
+    <div style="text-align:center;padding:20px 0;font-size:10px;font-weight:800;letter-spacing:2px;color:var(--purple);opacity:.3;text-transform:uppercase">20cml_</div>
+  </div>`;
+}
+
+const MON_FULL={Jan:'January',Feb:'February',Mar:'March',Apr:'April',May:'May',Jun:'June',Jul:'July',Aug:'August',Sep:'September',Oct:'October',Nov:'November',Dec:'December'};
+function calGrouped(cal){
+  var html='',firstMon='',lastMon='';
+  if(cal.length>0) firstMon=(cal[0].when.match(/Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec/)||[''])[0];
+  lastMon=firstMon;
+  for(var i=0;i<cal.length;i++){
+    var e=cal[i];
+    var mon=(e.when.match(/Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec/)||[''])[0];
+    if(mon!==lastMon&&mon!==firstMon){html+='<div style="padding:16px 4px 4px;font-size:11px;color:var(--ink2);text-transform:uppercase;letter-spacing:.5px;font-weight:600">'+esc(MON_FULL[mon]||mon)+'</div>';}
+    lastMon=mon;
+    var day=(e.when.match(/\d+/)||[''])[0];
+    var dow=e.when.split(',')[0];
+    html+='<div class="ecard" data-act="open" data-id="'+e.id+'" style="cursor:pointer;padding:14px 4px;border-bottom:1px solid rgba(255,255,255,.07);animation:slideUp .3s ease both">';
+    if(e.mine)html+='<div style="display:inline-block;background:#fff;color:#0A0A0A;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;padding:4px 12px 4px 10px;margin-bottom:6px;margin-left:-20px;clip-path:polygon(0 0,100% 0,calc(100% - 6px) 50%,100% 100%,0 100%)">Host</div>';
+    html+='<div style="display:flex;align-items:center;gap:14px">';
+    html+='<div style="flex:none;width:36px;text-align:center"><div style="font-size:8px;font-weight:700;color:var(--purple);text-transform:uppercase;letter-spacing:.5px">'+esc(dow)+'</div><div style="font-size:20px;font-weight:800;color:var(--ink)">'+esc(day)+'</div><div style="font-size:8px;font-weight:700;color:var(--ink2);text-transform:uppercase;letter-spacing:.5px">'+esc(mon)+'</div></div>';
+    html+='<div style="flex:none;width:3px;border-radius:2px;background:#FF1414;align-self:stretch"></div>';
+    html+='<div style="flex:1;min-width:0"><div style="font-family:DM Sans,sans-serif;font-size:14px;font-weight:500;color:var(--ink)">'+esc(e.title)+'</div><div style="font-size:11px;color:var(--ink2);margin-top:2px">'+esc(e.time)+' · '+esc(e.loc)+'</div></div>';
+    html+='</div></div>';
+  }
+  return html;
+}
+
+function calScreen(){
+  const monO={Jan:1,Feb:2,Mar:3,Apr:4,May:5,Jun:6,Jul:7,Aug:8,Sep:9,Oct:10,Nov:11,Dec:12};
+  const sk=w=>{const m=w.match(/Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec/);const d=w.match(/\d+/);return(monO[m?.[0]]||0)*100+(d?parseInt(d[0]):0)};
+  const cal=allEv().filter(e=>S.joined[e.id]).sort((a,b)=>sk(a.when)-sk(b.when));
+  return `
+  <div class="ns" style="position:absolute;inset:0;overflow-y:auto;padding:50px 0 76px;animation:fadeIn .2s;background:var(--bg)">
+    <div style="padding:14px 20px 14px">
+      <div style="font-size:11px;color:#888;text-transform:uppercase;letter-spacing:.5px;font-weight:600">${cal.length} upcoming</div>
+    </div>
+    <div style="padding:0 16px;display:flex;flex-direction:column;gap:8px">
+    ${cal.length===0?'<div style="text-align:center;padding:50px 20px;color:var(--ink3)"><div style="font-size:14px;font-weight:700;color:var(--ink)">Nothing yet</div><div style="font-size:12px;margin-top:4px">Join events from the feed</div></div>':''}
+    ${calGrouped(cal)}
+    </div>
+  </div>`;
+}
+
+function profileScreen(){
+  const jc=allEv().filter(e=>S.joined[e.id]).length;
+  return `
+  <div class="ns" style="position:absolute;inset:0;overflow-y:auto;padding:50px 0 76px;animation:fadeIn .2s">
+    <div style="display:flex;align-items:center;gap:16px;padding:0 20px">
+      <div style="width:72px;height:72px;border-radius:50%;background:var(--yellow);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:900;color:#0A0A0A;flex-shrink:0">CL</div>
+      <div style="flex:1">
+        <div style="font-size:16px;font-weight:800;color:var(--ink)">Camila Lee</div>
+        <div style="display:flex;gap:20px;margin-top:8px">
+          <div><div style="font-size:17px;font-weight:900;color:var(--ink)">${jc}</div><div style="font-size:9px;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px;font-weight:700;margin-top:1px">Joined</div></div>
+          <div><div style="font-size:17px;font-weight:900;color:var(--ink)">${S.userEvents.length+1}</div><div style="font-size:9px;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px;font-weight:700;margin-top:1px">Hosted</div></div>
+          <div><div style="font-size:17px;font-weight:900;color:var(--yellow)">96%</div><div style="font-size:9px;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px;font-weight:700;margin-top:1px">Show-up</div></div>
+        </div>
+      </div>
+    </div>
+    <div style="padding:0 20px;margin-top:10px">
+      <div style="font-size:12px;color:var(--ink3);font-weight:600">McMaster University</div>
+      <div style="font-size:12px;color:var(--ink3);font-weight:600;margin-top:1px">Computer Science · 2027</div>
+    </div>
+    <div style="margin-top:20px;display:grid;grid-template-columns:repeat(3,1fr);gap:2px">
+      <div style="aspect-ratio:1;background:var(--surfaceH)"></div>
+      <div style="aspect-ratio:1;background:var(--surface)"></div>
+      <div style="aspect-ratio:1;background:var(--surfaceH)"></div>
+      <div style="aspect-ratio:1;background:var(--surface)"></div>
+      <div style="aspect-ratio:1;background:var(--surfaceH)"></div>
+      <div style="aspect-ratio:1;background:var(--surface);display:flex;align-items:center;justify-content:center;color:var(--ink3);font-size:20px;cursor:pointer">+</div>
+    </div>
+  </div>`;
+}
+
+function detailScreen(){
+  const e=allEv().find(x=>x.id===S.detail);if(!e)return'';
+  const j=!!S.joined[e.id],f=filled(e),p=pct(e),cc=CC[e.cat]||'var(--ink2)';
+  return `
+  <div style="position:absolute;inset:0;z-index:40;background:var(--bg);${S._detailAnim?'animation:pushIn .3s cubic-bezier(.32,.72,0,1)':''};display:flex;flex-direction:column">
+    <div class="ns" style="flex:1;overflow-y:auto;padding:58px 20px 120px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px">
+        <div data-act="back" style="cursor:pointer;display:flex;align-items:center;justify-content:center">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <span style="font-size:10px;font-weight:800;color:${cc};text-transform:uppercase;letter-spacing:1px">${e.cat}</span>
+        ${j
+          ?`<div data-act="join" data-id="${e.id}" style="width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer"><svg width="21" height="21" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L19 7" stroke="#4A78F5" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>`
+          :`<div data-act="join" data-id="${e.id}" style="position:relative;width:28px;height:28px;cursor:pointer">
+            <div style="position:absolute;left:50%;top:-3px;transform:translateX(-50%);width:2px;height:8px;background:rgba(255,255,255,.35);border-radius:1px"></div>
+            <div style="position:absolute;left:50%;bottom:-3px;transform:translateX(-50%);width:2px;height:8px;background:rgba(255,255,255,.35);border-radius:1px"></div>
+            <div style="position:absolute;top:50%;left:-3px;transform:translateY(-50%);width:8px;height:2px;background:rgba(255,255,255,.35);border-radius:1px"></div>
+            <div style="position:absolute;top:50%;right:-3px;transform:translateY(-50%);width:8px;height:2px;background:rgba(255,255,255,.35);border-radius:1px"></div>
+            <div style="width:28px;height:28px;border-radius:50%;border:2px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#FF1414" stroke-width="2.5" stroke-linecap="round"/></svg></div>
+          </div>`
+        }
+      </div>
+
+      <div style="font-family:'Geist',sans-serif;font-size:17px;font-weight:600;color:var(--ink);letter-spacing:-.5px;line-height:1.2">${esc(e.title)}</div>
+      <div style="font-size:13px;color:var(--ink2);margin-top:6px"><span data-act="showhost" data-id="${e.id}" style="cursor:pointer;color:var(--purple);text-decoration:underline;text-decoration-style:dotted;text-decoration-color:rgba(124,58,237,.3);text-underline-offset:2px">${esc(e.host)}</span> · ${esc(e.meta)}</div>
+
+      <div style="display:flex;align-items:center;gap:8px;margin-top:16px">
+        <div style="flex:1;height:3px;background:var(--surface);border-radius:2px;overflow:hidden"><div style="height:100%;width:${p}%;background:${cc};border-radius:2px"></div></div>
+        <span style="font-size:10px;font-weight:700;color:var(--ink2)">${f}/${e.cap}</span>
+      </div>
+
+      <div style="margin-top:24px;display:flex;flex-direction:column;gap:16px">
+        <div style="display:flex;align-items:flex-start;gap:12px">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="flex-shrink:0;margin-top:1px"><rect x="3" y="4.5" width="18" height="16" rx="3" stroke="var(--ink2)" stroke-width="1.5"/><path d="M3 9h18" stroke="var(--ink2)" stroke-width="1.5"/></svg>
+          <div><div style="font-size:13px;font-weight:600;color:var(--ink)">${esc(e.when)}</div><div style="font-size:11px;color:var(--ink2);margin-top:1px">${esc(e.time)}${e.end?' – '+esc(e.end):''}</div></div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:12px">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="flex-shrink:0;margin-top:1px"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11Z" stroke="var(--ink2)" stroke-width="1.5"/><circle cx="12" cy="10" r="2" stroke="var(--ink2)" stroke-width="1.5"/></svg>
+          <div style="font-size:13px;font-weight:600;color:var(--ink)">${esc(e.loc)}</div>
+        </div>
+      </div>
+
+      <div style="height:1px;background:var(--hair);margin:24px 0"></div>
+
+      <div style="font-size:14px;color:var(--ink2);line-height:1.7">${esc(e.desc)}</div>
+
+      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:16px">${e.tags.map(t=>`<span style="font-size:11px;font-weight:500;color:var(--ink2);padding:4px 0">#${esc(t)}</span>`).join(`<span style="color:var(--ink2);font-size:11px">·</span>`)}</div>
+
+      ${e.mine?`<div data-act="delete" data-id="${e.id}" style="cursor:pointer;text-align:center;margin-top:40px;font-size:14px;font-weight:700;color:#D42511">Delete event</div>`:''}
+    </div>
+  </div>`;
+}
+
+function createScreen(){
+  const v=S.cTitle.trim()&&S.cDesc.trim()&&S.cDate&&S.cTime&&S.cLoc.trim();
+  return `
+  <div style="position:absolute;inset:0;z-index:50;background:var(--bg);display:flex;flex-direction:column;${S._createAnim?'animation:slideSheet .3s cubic-bezier(.32,.72,0,1)':''}">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:50px 16px 12px;border-bottom:1px solid rgba(255,255,255,.09)">
+      <div data-act="closeCreate" style="cursor:pointer;font-size:13px;font-weight:600;color:var(--ink2)">Cancel</div>
+      <div></div>
+      <button data-act="publish" style="border:none;font-size:10px;font-weight:800;padding:7px 10px;border-radius:14px;font-family:inherit;text-transform:uppercase;letter-spacing:.5px;${v?'cursor:pointer;background:var(--yellow);color:#0A0A0A':'cursor:default;background:rgba(255,255,255,.08);color:rgba(255,255,255,.25)'}">Post</button>
+    </div>
+    ${S.publishing
+      ?`<div style="flex:1;display:flex;align-items:center;justify-content:center"><div style="width:24px;height:24px;border:3px solid rgba(255,255,255,.1);border-top-color:var(--ink);border-radius:50%;animation:spin .7s linear infinite"></div></div>`
+      :`<div class="ns" style="flex:1;overflow-y:auto;padding:16px 20px 40px">
+        <label style="font-size:10px;font-weight:800;color:var(--ink2);text-transform:uppercase;letter-spacing:.5px">Title</label>
+        <input value="${esc(S.cTitle)}" data-inp="cTitle" placeholder="e.g. Calculus Final Cram" style="width:100%;margin-top:6px;margin-bottom:16px;border:none;border-radius:14px;padding:10px 12px;font-size:14px;color:var(--ink);background:rgba(255,255,255,.07)" />
+        <label style="font-size:10px;font-weight:800;color:var(--ink2);text-transform:uppercase;letter-spacing:.5px">Category</label>
+        <div style="display:flex;gap:6px;margin-top:6px;margin-bottom:16px">
+          ${['Sports','Study','Social','Arts'].map(c=>`<button data-act="setcat" data-id="${c}" style="flex:1;border:${S.cCat===c?'none':'1px solid var(--hair)'};background:${S.cCat===c?'var(--yellow)':'transparent'};color:${S.cCat===c?'#0A0A0A':'var(--ink2)'};font-size:10px;font-weight:700;padding:8px 0;border-radius:20px;cursor:pointer;font-family:inherit;text-transform:uppercase;letter-spacing:.5px">${c}</button>`).join('')}
+        </div>
+        <div style="display:flex;gap:10px;margin-bottom:16px">
+          <div style="flex:1"><label style="font-size:10px;font-weight:800;color:var(--ink2);text-transform:uppercase;letter-spacing:.5px">Date</label><input value="${esc(S.cDate||'')}" data-inp="cDate" type="date" style="width:100%;margin-top:6px;border:none;border-radius:14px;padding:10px 12px;font-size:13px;color:var(--ink);background:rgba(255,255,255,.07)" /></div>
+          <div style="flex:1"><label style="font-size:10px;font-weight:800;color:var(--ink2);text-transform:uppercase;letter-spacing:.5px">Time</label>
+            <div style="display:flex;gap:6px;margin-top:6px">
+              <input value="${esc(S.cTime||'')}" data-inp="cTime" type="time" style="flex:1;min-width:0;border:none;border-radius:14px;padding:10px 8px;font-size:13px;color:var(--ink);background:rgba(255,255,255,.07)" />
+              <div style="display:flex;border-radius:14px;overflow:hidden">
+                <button data-act="ampm" data-id="AM" style="border:none;cursor:pointer;font-size:10px;font-weight:800;padding:0 8px;font-family:inherit;${S.cAmpm==='AM'?'background:var(--purple);color:#fff':'background:rgba(255,255,255,.07);color:var(--ink2)'}">AM</button>
+                <button data-act="ampm" data-id="PM" style="border:none;cursor:pointer;font-size:10px;font-weight:800;padding:0 8px;font-family:inherit;${S.cAmpm==='PM'?'background:var(--purple);color:#fff':'background:rgba(255,255,255,.07);color:var(--ink2)'}">PM</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <label style="font-size:10px;font-weight:800;color:var(--ink2);text-transform:uppercase;letter-spacing:.5px">Location</label>
+        <input value="${esc(S.cLoc)}" data-inp="cLoc" placeholder="e.g. Maxwell Library" style="width:100%;margin-top:6px;margin-bottom:16px;border:none;border-radius:14px;padding:10px 12px;font-size:14px;color:var(--ink);background:rgba(255,255,255,.07)" />
+        <label style="font-size:10px;font-weight:800;color:var(--ink2);text-transform:uppercase;letter-spacing:.5px">Capacity</label>
+        <div style="display:flex;align-items:center;gap:12px;margin-top:6px;margin-bottom:16px">
+          <button data-act="capdec" style="width:32px;height:32px;border-radius:16px;border:none;background:rgba(255,255,255,.07);font-size:16px;font-weight:700;color:var(--purple);cursor:pointer">−</button>
+          <span style="font-size:16px;font-weight:800;color:var(--purple);min-width:24px;text-align:center">${S.cCap}</span>
+          <button data-act="capinc" style="width:32px;height:32px;border-radius:16px;border:none;background:rgba(255,255,255,.07);font-size:16px;font-weight:700;color:var(--purple);cursor:pointer">+</button>
+        </div>
+        <label style="font-size:10px;font-weight:800;color:var(--ink2);text-transform:uppercase;letter-spacing:.5px">Description</label>
+        <textarea data-inp="cDesc" placeholder="What's happening?" rows="5" style="width:100%;margin-top:6px;border:none;border-radius:14px;padding:10px 12px;font-size:14px;color:var(--ink);background:rgba(255,255,255,.07);resize:none;line-height:1.5;font-family:inherit">${esc(S.cDesc)}</textarea>
+        <label style="display:block;margin-top:16px;font-size:10px;font-weight:800;color:var(--ink2);text-transform:uppercase;letter-spacing:.5px">Tags</label>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;align-items:center">
+          ${S.cTags.map((t,i)=>`<span data-act="rmtag" data-id="${i}" style="font-size:12px;font-weight:600;color:var(--ink);background:rgba(255,255,255,.09);padding:4px 10px;border-radius:12px;cursor:pointer">#${esc(t)} ×</span>`).join('')}
+          <div style="display:flex;align-items:center;gap:3px">
+            <span style="font-size:13px;color:var(--ink2)">#</span>
+            <input data-inp="cTag" placeholder="Add tag" style="border:0;background:transparent;font-size:12px;color:var(--ink);width:60px" />
+          </div>
+        </div>
+      </div>`
+    }
+  </div>`;
+}
+
+function navBar(){
+  return `
+  <div style="position:absolute;left:50%;bottom:14px;transform:translateX(-50%);z-index:45;display:flex;gap:8px;background:rgba(120,120,120,.5);padding:6px 12px;border-radius:20px">
+    <div data-act="tab" data-id="home" style="width:${S.tab==='home'?'20px':'10px'};height:10px;border-radius:5px;background:#fff;opacity:${S.tab==='home'?'1':'.4'};cursor:pointer;transition:width .2s"></div>
+    <div data-act="tab" data-id="calendar" style="width:${S.tab==='calendar'?'20px':'10px'};height:10px;border-radius:5px;background:#fff;opacity:${S.tab==='calendar'?'1':'.4'};cursor:pointer;transition:width .2s"></div>
+  </div>`;
+}
+
+function render(){
+  const r=document.getElementById('app');
+  let screen='';
+  if(S.tab==='home')screen=homeScreen();
+  else if(S.tab==='calendar')screen=calScreen();
+  else if(S.tab==='profile')screen=profileScreen();
+  const isLight=S.tab==='calendar'||S.create;
+  const sc=effScale();
+  const zoom=`<div style="position:fixed;bottom:16px;right:16px;z-index:120;display:flex;align-items:center;gap:4px;background:rgba(28,28,30,.95);border:1px solid rgba(255,255,255,.1);border-radius:6px;padding:4px 6px;box-shadow:0 4px 16px rgba(0,0,0,.5)">
+    <button data-act="zo" style="width:28px;height:28px;border-radius:4px;border:0;background:transparent;cursor:pointer;font-size:15px;color:#aaa">−</button>
+    <button data-act="zf" style="min-width:40px;height:26px;border-radius:4px;border:0;cursor:pointer;font-size:10px;font-weight:800;background:${S.zoom==='fit'?'#fff':'transparent'};color:${S.zoom==='fit'?'#0A0A0A':'#888'}">Fit</button>
+    <button data-act="zi" style="width:28px;height:28px;border-radius:4px;border:0;background:transparent;cursor:pointer;font-size:15px;color:#aaa">+</button>
+  </div>`;
+  r.innerHTML=`
+  <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px 0">
+    ${zoom}
+    <div style="position:relative;width:${Math.round(384*sc)}px;height:${Math.round(832*sc)}px">
+    <div style="position:absolute;top:0;left:0;width:384px;height:832px;border-radius:52px;background:#000;padding:12px;transform:scale(${sc});transform-origin:top left;box-shadow:0 40px 80px -20px rgba(0,0,0,.5)">
+      <div style="position:relative;width:100%;height:100%;border-radius:40px;overflow:hidden;background:var(--bg)">
+        <div style="position:absolute;top:0;left:0;right:0;height:50px;z-index:60;display:flex;align-items:flex-start;justify-content:space-between;padding:16px 30px 0 46px;pointer-events:none">
+          <span style="font-size:15px;font-weight:600;color:var(--ink)">9:41</span>
+          <div style="display:flex;gap:6px;align-items:center;padding-top:1px">
+            <svg width="16" height="10" viewBox="0 0 18 11"><rect x="0" y="7" width="3" height="4" rx=".6" fill="var(--ink)"/><rect x="4.5" y="4.5" width="3" height="6.5" rx=".6" fill="var(--ink)"/><rect x="9" y="2.5" width="3" height="8.5" rx=".6" fill="var(--ink)"/><rect x="13.5" y="0" width="3" height="11" rx=".6" fill="var(--ink)"/></svg>
+            <svg width="20" height="10" viewBox="0 0 26 12"><rect x=".5" y=".5" width="22" height="11" rx="3" stroke="var(--ink)" stroke-opacity=".4" fill="none"/><rect x="2" y="2" width="18" height="8" rx="1.6" fill="var(--ink)"/><rect x="24" y="4" width="1.5" height="4" rx=".7" fill="var(--ink)" fill-opacity=".4"/></svg>
+          </div>
+        </div>
+        <div style="position:absolute;top:10px;left:50%;transform:translateX(-50%);width:110px;height:32px;border-radius:18px;background:#000;z-index:70"></div>
+        <div style="position:relative;height:100%;overflow:hidden;z-index:1">
+          ${screen}${S.detail!=null?detailScreen():''}${S.create?createScreen():''}${S.detail==null&&!S.create?navBar():''}${S.toast?`<div style="position:absolute;left:50%;top:50%;z-index:80;transform:translate(-50%,-50%);background:rgba(124,58,237,.6);color:#fff;padding:8px 18px;border-radius:4px;font-size:12px;font-weight:700;white-space:nowrap;animation:toastIn .25s ease">${esc(S.toast)}</div>`:''}${S.hostPopup!=null?(()=>{const e=allEv().find(x=>x.id===S.hostPopup);if(!e)return'';const hosted=allEv().filter(x=>x.host===e.host).length;const joined=allEv().filter(x=>x.host===e.host).length+2;return`
+            <div data-act="closehost" style="position:absolute;inset:0;z-index:90;background:rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;animation:fadeIn .15s">
+              <div style="background:#3A3A3C;border-radius:16px;padding:24px;width:280px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.6)">
+                <div style="width:52px;height:52px;border-radius:50%;background:var(--purple);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:#fff;margin:0 auto 12px">${esc(e.host.split(' ').map(w=>w[0]).join(''))}</div>
+                <div style="font-family:'Geist',sans-serif;font-size:16px;font-weight:600;color:var(--ink)">${esc(e.host)}</div>
+                <div style="font-size:11px;color:var(--ink2);margin-top:2px">${esc(e.meta)}</div>
+                <div style="display:flex;justify-content:center;gap:24px;margin-top:16px">
+                  <div><div style="font-size:18px;font-weight:800;color:var(--ink)">${joined}</div><div style="font-size:9px;color:var(--ink2);text-transform:uppercase;letter-spacing:.5px;font-weight:700;margin-top:1px">Joined</div></div>
+                  <div><div style="font-size:18px;font-weight:800;color:var(--ink)">${hosted}</div><div style="font-size:9px;color:var(--ink2);text-transform:uppercase;letter-spacing:.5px;font-weight:700;margin-top:1px">Hosted</div></div>
+                  <div>${(()=>{const su=e.showup||96;const sc=su>=80?'var(--red)':su>=56?'#E5A800':su>0?'#D42511':'var(--ink)';return`<div style="font-size:18px;font-weight:800;color:${sc}">${su}%</div>`})()}<div style="font-size:9px;color:var(--ink2);text-transform:uppercase;letter-spacing:.5px;font-weight:700;margin-top:1px">Show-up</div></div>
+                </div>
+              </div>
+            </div>`;})():''}
+        </div>
+        <div style="position:absolute;bottom:6px;left:50%;transform:translateX(-50%);width:120px;height:5px;border-radius:3px;background:rgba(255,255,255,.2);z-index:90;pointer-events:none"></div>
+        ${S.splash?`<div style="position:absolute;inset:0;z-index:100;background:#000000;display:flex;align-items:center;justify-content:center;transition:opacity .5s;opacity:${S.splashFade?0:1};pointer-events:${S.splashFade?'none':'auto'}"><div style="display:inline-flex;animation:logoTap 1.6s ease-in-out .1s 1 both;transform-origin:center">${logoBlock(.85)}</div></div>`:''}
+      </div>
+    </div>
+    </div>
+  </div>`;
+  if(focusK){const el=r.querySelector('[data-inp="'+focusK+'"]');if(el){el.focus();try{el.setSelectionRange(focusP,focusP)}catch(_){}}}
+  if(typeof S._scrollTop==='number'){
+    const feedEl=document.getElementById('feed');
+    if(feedEl){feedEl.scrollTop=S._scrollTop;}
+    requestAnimationFrame(()=>{
+      const f2=document.getElementById('feed');
+      if(f2&&typeof S._scrollTop==='number'){f2.scrollTop=S._scrollTop;delete S._scrollTop;}
+    });
+  }
+}
+
+document.addEventListener('input',ev=>{
+  const t=ev.target.closest('[data-inp]');if(!t)return;
+  const k=t.getAttribute('data-inp');focusK=k;focusP=t.selectionStart||0;
+  S[k]=t.value;if(k==='query')render();else if(S.create){const btn=document.querySelector('[data-act="publish"]');if(btn){const v=S.cTitle.trim()&&S.cDesc.trim()&&S.cDate&&S.cTime&&S.cLoc.trim();btn.style.background=v?'var(--yellow)':'rgba(255,255,255,.08)';btn.style.color=v?'#0A0A0A':'rgba(255,255,255,.25)';btn.style.cursor=v?'pointer':'default'}}
+});
+document.addEventListener('keydown',ev=>{
+  const t=ev.target.closest('[data-inp="cTag"]');
+  if(!t||ev.key!=='Enter')return;
+  ev.preventDefault();
+  const val=t.value.trim().replace(/^#/,'');
+  if(val&&!S.cTags.includes(val)){S.cTags.push(val)}
+  t.value='';focusK='cTag';focusP=0;render();
+});
+document.addEventListener('click',ev=>{
+  const t=ev.target.closest('[data-act]');if(!t)return;
+  const a=t.getAttribute('data-act'),id=t.getAttribute('data-id');focusK=null;
+  switch(a){
+    case'tab':S.tab=id;S.detail=null;S.create=false;break;
+    case'open':S.detail=parseInt(id);S._detailAnim=true;setTimeout(()=>{S._detailAnim=false},350);break;case'back':S.detail=null;break;
+    case'join':join(parseInt(id),ev);return;
+    case'delete':delete S.joined[parseInt(id)];S.userEvents=S.userEvents.filter(e=>e.id!==parseInt(id));S.detail=null;toast('Deleted');break;
+    case'filter':S.filter=id;break;case'clear':S.query='';break;
+    case'create':S.create=true;S._createAnim=true;setTimeout(()=>{S._createAnim=false},300);break;case'closeCreate':S.create=false;break;
+    case'publish':if(!S.cTitle.trim()||!S.cDesc.trim())return;S.publishing=true;render();setTimeout(()=>{const nid=2000+S.userEvents.length;const dd=S.cDate?new Date(S.cDate+'T12:00'):null;const days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];const mons=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];const whenStr=dd?days[dd.getDay()]+', '+mons[dd.getMonth()]+' '+dd.getDate():'TBD';const hm=S.cTime?S.cTime.split(':'):null;let timeStr='TBD';if(hm){let h=parseInt(hm[0]),m=hm[1],ap=S.cAmpm||'AM';if(h===0)h=12;else if(h>12)h-=12;timeStr=h+(m!=='00'?':'+m:'')+' '+ap;}S.userEvents.unshift({id:nid,title:S.cTitle.trim(),host:'Camila Lee',meta:'CS · 2027',cat:S.cCat,when:whenStr,time:timeStr,end:'',loc:S.cLoc.trim()||'Campus',cap:S.cCap,filled:1,today:false,week:true,weekend:false,desc:S.cDesc.trim(),tags:[],mine:true});S.joined[nid]=true;S.publishing=false;S.create=false;S.tab='calendar';S.cTitle='';S.cDate='';S.cTime='';S.cLoc='';S.cCap=8;S.cCat='Social';S.cDesc='';toast('Published');render()},900);return;
+    case'capinc':S.cCap=Math.min(50,S.cCap+1);break;case'capdec':S.cCap=Math.max(2,S.cCap-1);break;case'ampm':S.cAmpm=id;break;case'setcat':S.cCat=id;break;case'rmtag':S.cTags.splice(parseInt(id),1);break;case'showhost':S.hostPopup=parseInt(id);break;case'closehost':S.hostPopup=null;break;
+    case'zi':setZoom(1);return;case'zo':setZoom(-1);return;case'zf':setZoom('fit');return;
+  }
+  render();
+});
+render();
+let swipeX=0,swiping=false;
+document.addEventListener('mousedown',ev=>{if(ev.target.closest('input,textarea')){swiping=false;return}swipeX=ev.screenX;swiping=true});
+document.addEventListener('mouseup',ev=>{
+  if(!swiping)return;swiping=false;
+  if(S.detail!=null||S.create||S.hostPopup!=null)return;
+  const diff=swipeX-ev.screenX;
+  if(Math.abs(diff)<40)return;
+  if(diff>0&&S.tab==='home'){S.tab='calendar';render()}
+  else if(diff<0&&S.tab==='calendar'){S.tab='home';render()}
+});
+document.addEventListener('touchstart',ev=>{swipeX=ev.changedTouches[0].screenX},{passive:true});
+document.addEventListener('touchend',ev=>{
+  if(S.detail!=null||S.create||S.hostPopup!=null)return;
+  const diff=swipeX-ev.changedTouches[0].screenX;
+  if(Math.abs(diff)<40)return;
+  if(diff>0&&S.tab==='home'){S.tab='calendar';render()}
+  else if(diff<0&&S.tab==='calendar'){S.tab='home';render()}
+},{passive:true});
+let rz;window.addEventListener('resize',()=>{if(S.zoom!=='fit')return;clearTimeout(rz);rz=setTimeout(render,120)});
+setTimeout(()=>{S.splashFade=true;render()},2000);
+setTimeout(()=>{S.splash=false;render()},2500);
+</script>
+</body>
+</html>
