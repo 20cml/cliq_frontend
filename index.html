@@ -43,29 +43,35 @@ input[type="date"],input[type="time"]{-webkit-appearance:none;appearance:none}
 <div id="app"></div>
 <script>
 const EVENTS=[
-{id:999,title:'FIFA Fan Festival',host:'Jamie Chen',meta:'CS · 2027',cat:'Social',when:'Wed, Jul 2',time:'11 AM',end:'3 PM',loc:'Fort York & The Bentway',cap:50,filled:38,today:false,week:true,weekend:false,desc:"Big screen matches, food trucks, and good energy at Fort York. Open to everyone — no tickets needed, just show up.",tags:['FIFA','WorldCup','Soccer','Festival']},
-{id:6,title:'Clothing Swap & Sustainable Fashion Market',host:'Lena Cho',meta:'Fine Arts · 2026',cat:'Social',showup:55,when:'Sat, Jul 5',time:'11 AM',end:'4 PM',loc:'Hart House Circle',cap:40,filled:40,today:false,week:true,weekend:true,desc:"Bring clothes you don't wear anymore and swap them for something new. Local sustainable brands will also be selling. Zero waste, all vibes.",tags:['ClothingSwap','Sustainable','Fashion','ThriftFlip']},
+{id:999,title:'FIFA Fan Festival',host:'Jamie Chen',meta:'CS · 2027',cat:'Social',when:'Wed, Jul 2',time:'11 AM',end:'3 PM',loc:'Fort York & The Bentway',cap:20,filled:15,today:false,week:true,weekend:false,desc:"Big screen matches, food trucks, and good energy at Fort York. Open to everyone — no tickets needed, just show up.",tags:['FIFA','WorldCup','Soccer','Festival']},
+{id:6,title:'Clothing Swap & Sustainable Fashion Market',host:'Lena Cho',meta:'Fine Arts · 2026',cat:'Social',showup:55,when:'Sat, Jul 5',time:'11 AM',end:'4 PM',loc:'Hart House Circle',cap:20,filled:20,today:false,week:true,weekend:true,desc:"Bring clothes you don't wear anymore and swap them for something new. Local sustainable brands will also be selling. Zero waste, all vibes.",tags:['ClothingSwap','Sustainable','Fashion','ThriftFlip']},
 {id:3,title:'Board Game Night',host:'Marco Reyes',meta:'Kinesiology · 2026',cat:'Social',showup:65,when:'Sat, Oct 17',time:'7 PM',end:'10 PM',loc:'Student Centre',cap:16,filled:11,today:false,week:true,weekend:true,desc:"Playing Catan and a few party games. Snacks provided, come hang out and meet some new people!",tags:['BoardGames','Catan','Social']},
 {id:7,title:'Sunrise Run Club',host:'Amara Diallo',meta:'Nursing · 2028',cat:'Sports',when:'Fri, Aug 1',time:'7 AM',end:'8 AM',loc:'Campus Gates',cap:15,filled:9,today:true,week:true,weekend:false,desc:"Easy 5K loop around campus to start the week right. All paces welcome — we regroup at the top of the hill and grab smoothies after.",tags:['Running','Fitness','Morning']},
-{id:8,title:'Hackathon Team Formation',host:'Devon Park',meta:'CS · 2027',cat:'Study',when:'Sat, Nov 2',time:'12 PM',end:'2 PM',loc:'Innovation Hub',cap:24,filled:5,today:false,week:true,weekend:true,desc:"Looking for teammates before next weekend's hackathon. Pitch your idea or join one — designers, coders, and first-timers all welcome.",tags:['Hackathon','Coding','Teams']},
+{id:8,title:'Hackathon Team Formation',host:'Devon Park',meta:'CS · 2027',cat:'Study',when:'Sat, Nov 2',time:'12 PM',end:'2 PM',loc:'Innovation Hub',cap:20,filled:4,today:false,week:true,weekend:true,desc:"Looking for teammates before next weekend's hackathon. Pitch your idea or join one — designers, coders, and first-timers all welcome.",tags:['Hackathon','Coding','Teams']},
 {id:5,title:'Data Structure Study Sprint',host:'Jordan Lee',meta:'Commerce · 2027',cat:'Study',showup:67,when:'Thu, Jul 3',time:'2 PM',end:'5 PM',loc:'Maxwell Library · Rm 204',cap:12,filled:8,today:false,week:true,weekend:false,desc:"Grinding through data structures problem sets before the quiz. Bring your laptop and questions — we'll work through them together.",tags:['StudyGroup','Coding','DataStructures']},
 {id:1,title:'Linear Algebra Midterm Prep',host:'Alex Kim',meta:'SE · 2028',cat:'Study',when:'Wed, Oct 14',time:'2 PM',end:'4 PM',loc:'Maxwell Library · Rm 204',cap:8,filled:4,today:false,week:true,weekend:false,desc:"Going over the numerical linear algebra practice problems before our midterm next week. I'll book a room and bring coffee.",tags:['LinearAlgebra','StudyGroup','MidtermPrep']},
-{id:4,title:'Sunset Yoga & Mindfulness Session',host:'Sara Okafor',meta:'Life Sci · 2028',cat:'Sports',showup:34,when:'Fri, Jul 4',time:'6 PM',end:'7:30 PM',loc:'King\'s College Circle',cap:25,filled:18,today:false,week:true,weekend:false,desc:"Unwind with a guided yoga flow and meditation as the sun sets over campus. Bring a mat or towel. All levels welcome — beginners especially!",tags:['Yoga','Mindfulness','Wellness','Sunset']},
+{id:4,title:'Sunset Yoga & Mindfulness Session',host:'Sara Okafor',meta:'Life Sci · 2028',cat:'Sports',showup:34,when:'Fri, Jul 4',time:'6 PM',end:'7:30 PM',loc:'King\'s College Circle',cap:20,filled:14,today:false,week:true,weekend:false,desc:"Unwind with a guided yoga flow and meditation as the sun sets over campus. Bring a mat or towel. All levels welcome — beginners especially!",tags:['Yoga','Mindfulness','Wellness','Sunset']},
 {id:2,title:'Monet to Matisse',host:'Priya Nair',meta:'History · 2027',cat:'Arts',when:'Sun, Jul 6',time:'1 PM',end:'4 PM',loc:'Art Gallery of Ontario',cap:15,filled:10,today:false,week:true,weekend:true,desc:"Exploring the Impressionist collection at the AGO. We'll grab coffee at the gallery café after. Great for art lovers and first-timers alike!",tags:['Art','AGO','Impressionism','Gallery']},
 {id:10,title:'Software Requirements — Usability Test',host:'Camila Lee',meta:'CS · 2027',cat:'Study',when:'Wed, Jul 2',time:'2 PM',end:'4 PM',loc:'McMaster University · Rm 400',cap:12,filled:3,today:false,week:false,weekend:false,desc:"Running usability tests for our SFWRTECH 3RQ3 project. Come test interactive prototypes and give feedback — great practice for your own milestones.",tags:['Usability','Testing','SFWRTECH'],mine:true},
-{id:11,title:'Artificial Intelligence Talk',host:'Victor Leme',meta:'CS · 2027',cat:'Study',when:'Wed, Sep 2',time:'7 PM',end:'9 PM',loc:'Hilton Hotel Downtown',cap:50,filled:32,today:false,week:false,weekend:false,desc:"Guest speaker series on the future of AI in software engineering. Networking reception after — open to all students.",tags:['AI','Talk','Networking']},
-{id:12,title:'Magic Cube Competition',host:'Lisa Park',meta:'CS · 2027',cat:'Study',when:'Fri, Sep 18',time:'5 PM',end:'8 PM',loc:'Sheraton Hotel',cap:30,filled:18,today:false,week:false,weekend:false,desc:"Speedcubing tournament open to all skill levels. Bring your own cube or borrow one. Prizes for top 3 — beginners welcome!",tags:['Rubiks','Competition','Puzzle']},
+{id:11,title:'Artificial Intelligence Talk',host:'Victor Leme',meta:'CS · 2027',cat:'Study',when:'Wed, Sep 2',time:'7 PM',end:'9 PM',loc:'Hilton Hotel Downtown',cap:20,filled:13,today:false,week:false,weekend:false,desc:"Guest speaker series on the future of AI in software engineering. Networking reception after — open to all students.",tags:['AI','Talk','Networking']},
+{id:12,title:'Magic Cube Competition',host:'Lisa Park',meta:'CS · 2027',cat:'Study',when:'Fri, Sep 18',time:'5 PM',end:'8 PM',loc:'Sheraton Hotel',cap:20,filled:12,today:false,week:false,weekend:false,desc:"Speedcubing tournament open to all skill levels. Bring your own cube or borrow one. Prizes for top 3 — beginners welcome!",tags:['Rubiks','Competition','Puzzle']},
 {id:13,title:'System Design Study',host:'Eli Mohan',meta:'CS · 2027',cat:'Study',when:'Mon, Nov 16',time:'10 AM',end:'12 PM',loc:'Maxwell Library · Rm 100',cap:15,filled:6,today:false,week:false,weekend:false,desc:"Deep dive into system design patterns — load balancers, caching, database sharding. Preparing for technical interviews together.",tags:['SystemDesign','Interview','Architecture']},
 {id:14,title:'Data Center Tour — Microsoft',host:'Hugo Paz',meta:'CS · 2027',cat:'Study',when:'Tue, Dec 1',time:'3 PM',end:'5 PM',loc:'Microsoft Downtown',cap:20,filled:14,today:false,week:false,weekend:false,desc:"Exclusive tour of Microsoft's downtown data center. Learn about cloud infrastructure, networking, and career opportunities. Limited spots!",tags:['Microsoft','DataCenter','CloudComputing']},
 ];
 
 const CC={Study:'#888',Social:'#888',Sports:'#888',Arts:'#888'};
 
-const S={tab:'home',detail:null,create:false,hostPopup:null,query:'',filter:'all',joined:{999:true,6:true,2:true,7:true,10:true},toast:null,splash:true,splashFade:false,zoom:(()=>{const v=localStorage.getItem('cliquoZoom');return v?(v==='fit'?'fit':parseFloat(v)):'fit'})(),
-cTitle:'',cDate:'',cTime:'',cAmpm:'PM',cLoc:'',cCap:8,cDesc:'',cCat:'Social',cTags:[],cTag:'',publishing:false,userEvents:[]};
+const S={tab:'home',detail:null,create:false,hostPopup:null,menuOpen:false,query:'',filter:'all',joined:{10:true},toast:null,splash:true,splashFade:false,zoom:(()=>{const v=localStorage.getItem('cliquoZoom');return v?(v==='fit'?'fit':parseFloat(v)):'fit'})(),
+cTitle:'',cDate:'',cTime:'',cAmpm:'PM',cLoc:'',cCap:0,cDesc:'',cCat:'Social',cTags:[],cTag:'',publishing:false,userEvents:[],dpOpen:false,dpMonth:new Date().getMonth()+1,dpDay:new Date().getDate(),dpYear:new Date().getFullYear(),tpOpen:false,tpHour:9,tpMinute:0,tpAmpm:'AM',cpOpen:false};
 
 let toastT=null,focusK=null,focusP=0;
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+const MONTH_NAMES=['January','February','March','April','May','June','July','August','September','October','November','December'];
+function fmtDateLong(iso){const[y,m,d]=iso.split('-').map(Number);return MONTH_NAMES[m-1]+' '+d+', '+y}
+function fmtTimeLong(hm,ampm){const[h,m]=hm.split(':').map(Number);let h12=h%12;if(h12===0)h12=12;return h12+':'+String(m).padStart(2,'0')+' '+(ampm||(h>=12?'PM':'AM'))}
+function daysInMonth(m,y){return new Date(y,m,0).getDate()}
+const DP_H=36;
+function wheelCol(col,items){return `<div data-wheel="${col}" style="flex:1;height:100%;overflow-y:scroll;scroll-snap-type:y mandatory;scrollbar-width:none" class="ns"><div style="height:${DP_H*2}px"></div>${items.map(v=>`<div style="height:${DP_H}px;display:flex;align-items:center;justify-content:center;scroll-snap-align:center;font-size:16px;font-weight:600;color:var(--ink)">${v}</div>`).join('')}<div style="height:${DP_H*2}px"></div></div>`}
 function allEv(){return S.userEvents.concat(EVENTS)}
 function filled(e){return Math.min(e.cap,e.filled+(S.joined[e.id]?1:0))}
 function pct(e){return Math.round(filled(e)/e.cap*100)}
@@ -85,12 +91,11 @@ function matches(e){
   if(!q)return true;
   return(e.title+' '+e.host+' '+e.loc+' '+e.desc+' '+e.cat).toLowerCase().includes(q);
 }
-function toast(m){}
+function toast(m){S.toast=m;render();clearTimeout(toast._t);toast._t=setTimeout(()=>{S.toast=null;render()},1800)}
 function saveScroll(){const s=document.getElementById('feed');if(s)S._scrollTop=s.scrollTop;}
 function join(id,ev){
   saveScroll();
-  if(!S.joined[id]){S.joined[id]=true}else{delete S.joined[id]}
-  render();
+  if(!S.joined[id]){S.joined[id]=true;toast('Joined')}else{delete S.joined[id];toast('Left')}
 }
 function fitScale(){return Math.max(.3,Math.min(1,(innerHeight-56)/832,(innerWidth-32)/384))}
 function effScale(){return S.zoom==='fit'?fitScale():S.zoom}
@@ -101,23 +106,19 @@ function card(e){
   return `
   <div class="ecard${e.mine?' mine':''}" style="animation:slideUp .3s ease both;padding:16px 20px;margin-left:4px;border-bottom:1px solid var(--hair);${e.mine?'background:#FF1414':''}">
     <div style="display:flex;align-items:baseline;gap:6px;margin-bottom:6px">
-      ${e.cat==='Sports'?`<img src="logo/caca.png" style="height:17px;width:auto" />`:e.cat==='Social'?`<img src="logo/hearting.png" style="height:17px;width:auto" />`:e.cat==='Arts'?`<img src="logo/lelele.png" style="height:19px;width:auto" />`:e.cat==='Study'?`<img src="logo/cucu.png" style="height:17px;width:auto" />`:`<span style="font-size:10px;font-weight:800;color:${cc};text-transform:uppercase;letter-spacing:1px">${e.cat}</span>`}
-      <span style="font-size:10px;color:var(--ink3)">·</span>
+      <span data-act="showhost" data-id="${e.id}" style="cursor:pointer;font-size:13px;font-weight:400;color:var(--purple);text-decoration:underline;text-decoration-style:dotted;text-decoration-color:rgba(255,255,255,.35);text-underline-offset:2px">${esc(e.host)}</span>
+      <span style="font-size:18px;color:var(--purple);position:relative;top:3.78px">·</span>
       <span style="font-size:13px;color:var(--ink2)">${esc(e.when)} · ${esc(e.time)}</span>
     </div>
     <div style="display:flex;align-items:flex-start;gap:12px">
       <div data-act="open" data-id="${e.id}" style="cursor:pointer;flex:1;min-width:0">
         <div style="font-family:'Geist',sans-serif;font-size:15px;font-weight:600;color:var(--ink);letter-spacing:-.4px;line-height:1.2">${esc(e.title)}</div>
-        <div style="font-size:12px;color:var(--ink2);margin-top:5px"><span data-act="showhost" data-id="${e.id}" style="cursor:pointer;color:var(--purple);text-decoration:underline;text-decoration-style:dotted;text-decoration-color:rgba(255,255,255,.35);text-underline-offset:2px">${esc(e.host)}</span> · ${esc(e.loc)}</div>
+        <div style="font-size:12px;color:var(--ink2);margin-top:5px">${esc(e.loc)}</div>
       </div>
       ${j
-        ?`<div data-act="join" data-id="${e.id}" style="flex-shrink:0;width:26px;height:26px;display:flex;align-items:center;justify-content:center;cursor:pointer;margin-top:-6px;margin-right:6px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L19 7" stroke="#4A78F5" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>`
-        :`<div data-act="join" data-id="${e.id}" style="position:relative;flex-shrink:0;width:26px;height:26px;margin-top:-6px;margin-right:6px;cursor:pointer">
-          <div style="position:absolute;left:50%;top:-3px;transform:translateX(-50%);width:2px;height:8px;background:rgba(255,255,255,.35);border-radius:1px"></div>
-          <div style="position:absolute;left:50%;bottom:-3px;transform:translateX(-50%);width:2px;height:8px;background:rgba(255,255,255,.35);border-radius:1px"></div>
-          <div style="position:absolute;top:50%;left:-3px;transform:translateY(-50%);width:8px;height:2px;background:rgba(255,255,255,.35);border-radius:1px"></div>
-          <div style="position:absolute;top:50%;right:-3px;transform:translateY(-50%);width:8px;height:2px;background:rgba(255,255,255,.35);border-radius:1px"></div>
-          <div style="width:26px;height:26px;border-radius:50%;border:2px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center"><svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#FF1414" stroke-width="2.5" stroke-linecap="round"/></svg></div>
+        ?`<div data-act="join" data-id="${e.id}" style="flex-shrink:0;width:26px;height:26px;display:flex;align-items:center;justify-content:center;cursor:pointer;margin-top:-6px;margin-right:6px"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L19 7" stroke="#4A78F5" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>`
+        :`<div data-act="join" data-id="${e.id}" style="flex-shrink:0;width:26px;height:26px;margin-top:-6px;margin-right:6px;cursor:pointer;border-radius:50%;border:1.5px solid rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center">
+          <div style="width:14px;height:14px;background:#FF1414;-webkit-mask:url('logo/apple.png') center/contain no-repeat;mask:url('logo/apple.png') center/contain no-repeat"></div>
         </div>`
       }
     </div>
@@ -139,14 +140,14 @@ function homeScreen(){
   <div id="feed" class="ns" style="position:absolute;inset:0;overflow-y:auto;padding:28px 0 76px">
     <div style="padding:0 20px">
       <div style="display:flex;align-items:flex-end;justify-content:center;position:relative;z-index:2;padding-top:26px;margin-bottom:-30px">
-        <div style="position:absolute;inset:0;top:14px;overflow:hidden;z-index:0;pointer-events:none;display:flex;align-items:center">
-          <span style="display:inline-block;white-space:nowrap;font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.18);animation:marquee 9s linear infinite">Just show up · Just show up · Just show up · Just show up ·</span>
+        <div style="position:absolute;left:-20px;right:-20px;top:14px;bottom:0;overflow:hidden;z-index:0;pointer-events:none;display:flex;align-items:center">
+          <span style="display:inline-block;white-space:nowrap;font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.18);animation:marquee 24s linear infinite">Just show up · Just show up · Just show up · Just show up · Just show up · Just show up · Just show up · Just show up · Just show up · Just show up · Just show up · Just show up ·</span>
         </div>
-        <div data-act="create" style="position:absolute;left:-4px;bottom:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:8px;z-index:2">
-          <img src="logo/apple.png" style="width:20px;height:20px" />
+        <div data-act="create" style="position:absolute;left:-4px;bottom:8.22px;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:8px;z-index:2">
+          <div style="width:34px;height:34px;border-radius:50%;border:1.5px solid rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center"><img src="logo/apple.png" style="width:20px;height:20px" /></div>
         </div>
         ${logoBlock(.58,false)}
-        <div style="position:absolute;right:0;bottom:18px;cursor:pointer;display:flex;align-items:center;justify-content:center">
+        <div data-act="menu" style="position:absolute;right:6px;bottom:18px;cursor:pointer;display:flex;align-items:center;justify-content:center">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h16M4 18h16" stroke="var(--ink)" stroke-width="2" stroke-linecap="round"/></svg>
         </div>
       </div>
@@ -163,7 +164,7 @@ function homeScreen(){
       ?`<div style="text-align:center;padding:60px 30px;color:var(--ink3)"><div style="font-size:14px;font-weight:700;color:var(--ink)">No events found</div></div>`
       :`<div style="margin-top:8px">${feed.map(card).join('')}</div>`
     }
-    <div style="text-align:center;padding:20px 0;font-size:10px;font-weight:800;letter-spacing:2px;color:var(--purple);opacity:.3;text-transform:uppercase">20cml_</div>
+    <div style="text-align:center;padding:20px 0;font-size:10px;font-weight:800;letter-spacing:2px;color:var(--purple);opacity:.3;text-transform:uppercase">20cml_v2</div>
   </div>`;
 }
 
@@ -197,7 +198,14 @@ function calScreen(){
   return `
   <div class="ns" style="position:absolute;inset:0;overflow-y:auto;padding:50px 0 76px;animation:fadeIn .2s;background:var(--bg)">
     <div style="padding:14px 20px 14px">
-      <div style="font-size:11px;color:#888;text-transform:uppercase;letter-spacing:.5px;font-weight:600">${cal.length} upcoming</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px">
+        <div data-act="tab" data-id="home" style="cursor:pointer;display:flex;align-items:center;justify-content:center;width:24px;height:24px">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <span style="font-size:10px;font-weight:800;color:var(--ink2);text-transform:uppercase;letter-spacing:1px">${cal.length} upcoming</span>
+        <div style="width:20px"></div>
+      </div>
+      <div style="font-family:'Geist',sans-serif;font-size:17px;font-weight:600;color:var(--ink);letter-spacing:-.5px;line-height:1.2">My Joined Events</div>
     </div>
     <div style="padding:0 16px;display:flex;flex-direction:column;gap:8px">
     ${cal.length===0?'<div style="text-align:center;padding:50px 20px;color:var(--ink3)"><div style="font-size:14px;font-weight:700;color:var(--ink)">Nothing yet</div><div style="font-size:12px;margin-top:4px">Join events from the feed</div></div>':''}
@@ -248,13 +256,9 @@ function detailScreen(){
         </div>
         <span style="font-size:10px;font-weight:800;color:${cc};text-transform:uppercase;letter-spacing:1px">${e.cat}</span>
         ${j
-          ?`<div data-act="join" data-id="${e.id}" style="width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer"><svg width="21" height="21" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L19 7" stroke="#4A78F5" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>`
-          :`<div data-act="join" data-id="${e.id}" style="position:relative;width:28px;height:28px;cursor:pointer">
-            <div style="position:absolute;left:50%;top:-3px;transform:translateX(-50%);width:2px;height:8px;background:rgba(255,255,255,.35);border-radius:1px"></div>
-            <div style="position:absolute;left:50%;bottom:-3px;transform:translateX(-50%);width:2px;height:8px;background:rgba(255,255,255,.35);border-radius:1px"></div>
-            <div style="position:absolute;top:50%;left:-3px;transform:translateY(-50%);width:8px;height:2px;background:rgba(255,255,255,.35);border-radius:1px"></div>
-            <div style="position:absolute;top:50%;right:-3px;transform:translateY(-50%);width:8px;height:2px;background:rgba(255,255,255,.35);border-radius:1px"></div>
-            <div style="width:28px;height:28px;border-radius:50%;border:2px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#FF1414" stroke-width="2.5" stroke-linecap="round"/></svg></div>
+          ?`<div data-act="join" data-id="${e.id}" style="width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L19 7" stroke="#4A78F5" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>`
+          :`<div data-act="join" data-id="${e.id}" style="width:28px;height:28px;cursor:pointer;border-radius:50%;border:1.5px solid rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center">
+            <div style="width:15px;height:15px;background:#FF1414;-webkit-mask:url('logo/apple.png') center/contain no-repeat;mask:url('logo/apple.png') center/contain no-repeat"></div>
           </div>`
         }
       </div>
@@ -308,25 +312,15 @@ function createScreen(){
           ${['Sports','Study','Social','Arts'].map(c=>`<button data-act="setcat" data-id="${c}" style="flex:1;border:${S.cCat===c?'none':'1px solid var(--hair)'};background:${S.cCat===c?'var(--yellow)':'transparent'};color:${S.cCat===c?'#0A0A0A':'var(--ink2)'};font-size:10px;font-weight:700;padding:8px 0;border-radius:20px;cursor:pointer;font-family:inherit;text-transform:uppercase;letter-spacing:.5px">${c}</button>`).join('')}
         </div>
         <div style="display:flex;gap:10px;margin-bottom:16px">
-          <div style="flex:1"><label style="font-size:10px;font-weight:800;color:var(--ink2);text-transform:uppercase;letter-spacing:.5px">Date</label><input value="${esc(S.cDate||'')}" data-inp="cDate" type="date" style="width:100%;margin-top:6px;border:none;border-radius:14px;padding:10px 12px;font-size:13px;color:var(--ink);background:rgba(255,255,255,.07)" /></div>
+          <div style="flex:1"><label style="font-size:10px;font-weight:800;color:var(--ink2);text-transform:uppercase;letter-spacing:.5px">Date</label><div data-act="opendp" style="width:100%;margin-top:6px;border:none;border-radius:14px;padding:10px 12px;font-size:13px;color:${S.cDate?'var(--ink)':'var(--ink3)'};background:rgba(255,255,255,.07);cursor:pointer">${S.cDate?fmtDateLong(S.cDate):'Select date'}</div></div>
           <div style="flex:1"><label style="font-size:10px;font-weight:800;color:var(--ink2);text-transform:uppercase;letter-spacing:.5px">Time</label>
-            <div style="display:flex;gap:6px;margin-top:6px">
-              <input value="${esc(S.cTime||'')}" data-inp="cTime" type="time" style="flex:1;min-width:0;border:none;border-radius:14px;padding:10px 8px;font-size:13px;color:var(--ink);background:rgba(255,255,255,.07)" />
-              <div style="display:flex;border-radius:14px;overflow:hidden">
-                <button data-act="ampm" data-id="AM" style="border:none;cursor:pointer;font-size:10px;font-weight:800;padding:0 8px;font-family:inherit;${S.cAmpm==='AM'?'background:var(--purple);color:#fff':'background:rgba(255,255,255,.07);color:var(--ink2)'}">AM</button>
-                <button data-act="ampm" data-id="PM" style="border:none;cursor:pointer;font-size:10px;font-weight:800;padding:0 8px;font-family:inherit;${S.cAmpm==='PM'?'background:var(--purple);color:#fff':'background:rgba(255,255,255,.07);color:var(--ink2)'}">PM</button>
-              </div>
-            </div>
+            <div data-act="opentp" style="width:100%;margin-top:6px;border:none;border-radius:14px;padding:10px 12px;font-size:13px;color:${S.cTime?'var(--ink)':'var(--ink3)'};background:rgba(255,255,255,.07);cursor:pointer">${S.cTime?fmtTimeLong(S.cTime,S.cAmpm):'Select time'}</div>
           </div>
         </div>
         <label style="font-size:10px;font-weight:800;color:var(--ink2);text-transform:uppercase;letter-spacing:.5px">Location</label>
         <input value="${esc(S.cLoc)}" data-inp="cLoc" placeholder="e.g. Maxwell Library" style="width:100%;margin-top:6px;margin-bottom:16px;border:none;border-radius:14px;padding:10px 12px;font-size:14px;color:var(--ink);background:rgba(255,255,255,.07)" />
         <label style="font-size:10px;font-weight:800;color:var(--ink2);text-transform:uppercase;letter-spacing:.5px">Capacity</label>
-        <div style="display:flex;align-items:center;gap:12px;margin-top:6px;margin-bottom:16px">
-          <button data-act="capdec" style="width:32px;height:32px;border-radius:16px;border:none;background:rgba(255,255,255,.07);font-size:16px;font-weight:700;color:var(--purple);cursor:pointer">−</button>
-          <span style="font-size:16px;font-weight:800;color:var(--purple);min-width:24px;text-align:center">${S.cCap}</span>
-          <button data-act="capinc" style="width:32px;height:32px;border-radius:16px;border:none;background:rgba(255,255,255,.07);font-size:16px;font-weight:700;color:var(--purple);cursor:pointer">+</button>
-        </div>
+        <div data-act="opencp" style="margin-top:6px;margin-bottom:16px;border:none;border-radius:14px;padding:10px 12px;font-size:13px;color:var(--ink);background:rgba(255,255,255,.07);cursor:pointer">${S.cCap} people</div>
         <label style="font-size:10px;font-weight:800;color:var(--ink2);text-transform:uppercase;letter-spacing:.5px">Description</label>
         <textarea data-inp="cDesc" placeholder="What's happening?" rows="5" style="width:100%;margin-top:6px;border:none;border-radius:14px;padding:10px 12px;font-size:14px;color:var(--ink);background:rgba(255,255,255,.07);resize:none;line-height:1.5;font-family:inherit">${esc(S.cDesc)}</textarea>
         <label style="display:block;margin-top:16px;font-size:10px;font-weight:800;color:var(--ink2);text-transform:uppercase;letter-spacing:.5px">Tags</label>
@@ -391,6 +385,65 @@ function render(){
                 </div>
               </div>
             </div>`;})():''}
+          ${S.menuOpen?`<div data-act="closemenu" style="position:absolute;inset:0;z-index:95;background:rgba(0,0,0,.35);animation:fadeIn .15s">
+            <div style="position:absolute;right:0;top:0;bottom:0;width:34%;max-width:132px;background:#232325;box-shadow:-8px 0 30px rgba(0,0,0,.5);animation:pushIn .25s ease;padding:60px 10px 20px;display:flex;flex-direction:column;gap:4px">
+              <div data-act="showhost" data-id="10" style="padding:12px 14px;cursor:pointer;border-radius:10px"><span style="font-size:14px;font-weight:400;color:var(--purple);text-decoration:underline;text-decoration-style:dotted;text-decoration-color:rgba(255,255,255,.35);text-underline-offset:2px">Camila Lee</span></div>
+              <div style="padding:12px 14px;font-size:14px;font-weight:700;color:var(--ink3);cursor:default">Settings</div>
+              <div style="padding:12px 14px;font-size:14px;font-weight:700;color:var(--ink3);cursor:default">Activity</div>
+            </div>
+          </div>`:''}
+          ${S.dpOpen?(()=>{const yrs=[];for(let y=new Date().getFullYear();y<=new Date().getFullYear()+2;y++)yrs.push(y);const dim=daysInMonth(S.dpMonth,S.dpYear);const dys=[];for(let d=1;d<=dim;d++)dys.push(d);return`
+          <div data-act="closedp" style="position:absolute;inset:0;z-index:97;background:rgba(0,0,0,.4);display:flex;align-items:flex-end">
+            <div style="width:100%;background:#1c1c1c;border-radius:20px 20px 0 0;padding:16px;animation:slideSheet .25s ease">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+                <span data-act="closedp" style="color:var(--ink2);font-size:14px;cursor:pointer;padding:4px 6px">Cancel</span>
+                <span style="font-size:14px;font-weight:800;color:var(--ink)">Date</span>
+                <span data-act="donedp" style="color:var(--yellow);font-weight:800;font-size:14px;cursor:pointer;padding:4px 6px">Done</span>
+              </div>
+              <div style="position:relative;height:${DP_H*5}px">
+                <div style="position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);height:${DP_H}px;background:rgba(255,255,255,.08);border-radius:10px;pointer-events:none;z-index:1"></div>
+                <div style="display:flex;height:100%">
+                  ${wheelCol('dpMonth',MONTH_NAMES.map(m=>m.slice(0,3)))}
+                  ${wheelCol('dpDay',dys)}
+                  ${wheelCol('dpYear',yrs)}
+                </div>
+              </div>
+            </div>
+          </div>`})():''}
+          ${S.tpOpen?(()=>{const hrs=[];for(let h=1;h<=12;h++)hrs.push(h);const mins=[];for(let m=0;m<60;m+=15)mins.push(String(m).padStart(2,'0'));return`
+          <div data-act="closetp" style="position:absolute;inset:0;z-index:97;background:rgba(0,0,0,.4);display:flex;align-items:flex-end">
+            <div style="width:100%;background:#1c1c1c;border-radius:20px 20px 0 0;padding:16px;animation:slideSheet .25s ease">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+                <span data-act="closetp" style="color:var(--ink2);font-size:14px;cursor:pointer;padding:4px 6px">Cancel</span>
+                <span style="font-size:14px;font-weight:800;color:var(--ink)">Time</span>
+                <span data-act="donetp" style="color:var(--yellow);font-weight:800;font-size:14px;cursor:pointer;padding:4px 6px">Done</span>
+              </div>
+              <div style="position:relative;height:${DP_H*5}px">
+                <div style="position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);height:${DP_H}px;background:rgba(255,255,255,.08);border-radius:10px;pointer-events:none;z-index:1"></div>
+                <div style="display:flex;height:100%">
+                  ${wheelCol('tpHour',hrs)}
+                  ${wheelCol('tpMinute',mins)}
+                  ${wheelCol('tpAmpm',['AM','PM'])}
+                </div>
+              </div>
+            </div>
+          </div>`})():''}
+          ${S.cpOpen?(()=>{const caps=[];for(let c=0;c<=20;c++)caps.push(c);return`
+          <div data-act="closecp" style="position:absolute;inset:0;z-index:97;background:rgba(0,0,0,.4);display:flex;align-items:flex-end">
+            <div style="width:100%;background:#1c1c1c;border-radius:20px 20px 0 0;padding:16px;animation:slideSheet .25s ease">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+                <span data-act="closecp" style="color:var(--ink2);font-size:14px;cursor:pointer;padding:4px 6px">Cancel</span>
+                <span style="font-size:14px;font-weight:800;color:var(--ink)">Capacity</span>
+                <span data-act="donecp" style="color:var(--yellow);font-weight:800;font-size:14px;cursor:pointer;padding:4px 6px">Done</span>
+              </div>
+              <div style="position:relative;height:${DP_H*5}px">
+                <div style="position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);height:${DP_H}px;background:rgba(255,255,255,.08);border-radius:10px;pointer-events:none;z-index:1"></div>
+                <div style="display:flex;height:100%">
+                  ${wheelCol('cpCap',caps)}
+                </div>
+              </div>
+            </div>
+          </div>`})():''}
         </div>
         <div style="position:absolute;bottom:6px;left:50%;transform:translateX(-50%);width:120px;height:5px;border-radius:3px;background:rgba(255,255,255,.2);z-index:90;pointer-events:none"></div>
         ${S.splash?`<div style="position:absolute;inset:0;z-index:100;background:#000000;display:flex;align-items:center;justify-content:center;transition:opacity .5s;opacity:${S.splashFade?0:1};pointer-events:${S.splashFade?'none':'auto'}"><div style="display:inline-flex;animation:logoTap 1.6s ease-in-out .1s 1 both;transform-origin:center">${logoBlock(.85)}</div></div>`:''}
@@ -399,6 +452,24 @@ function render(){
     </div>
   </div>`;
   if(focusK){const el=r.querySelector('[data-inp="'+focusK+'"]');if(el){el.focus();try{el.setSelectionRange(focusP,focusP)}catch(_){}}}
+  if(S.dpOpen){
+    const dim=daysInMonth(S.dpMonth,S.dpYear);
+    if(S.dpDay>dim)S.dpDay=dim;
+    const mCol=r.querySelector('[data-wheel="dpMonth"]'),dCol=r.querySelector('[data-wheel="dpDay"]'),yCol=r.querySelector('[data-wheel="dpYear"]');
+    if(mCol)mCol.scrollTop=(S.dpMonth-1)*DP_H;
+    if(dCol)dCol.scrollTop=(S.dpDay-1)*DP_H;
+    if(yCol){const y0=new Date().getFullYear();yCol.scrollTop=(S.dpYear-y0)*DP_H}
+  }
+  if(S.tpOpen){
+    const hCol=r.querySelector('[data-wheel="tpHour"]'),miCol=r.querySelector('[data-wheel="tpMinute"]'),apCol=r.querySelector('[data-wheel="tpAmpm"]');
+    if(hCol)hCol.scrollTop=(S.tpHour-1)*DP_H;
+    if(miCol)miCol.scrollTop=Math.round(S.tpMinute/15)*DP_H;
+    if(apCol)apCol.scrollTop=(S.tpAmpm==='PM'?1:0)*DP_H;
+  }
+  if(S.cpOpen){
+    const cCol=r.querySelector('[data-wheel="cpCap"]');
+    if(cCol)cCol.scrollTop=S.cCap*DP_H;
+  }
   if(typeof S._scrollTop==='number'){
     const feedEl=document.getElementById('feed');
     if(feedEl){feedEl.scrollTop=S._scrollTop;}
@@ -423,17 +494,28 @@ document.addEventListener('keydown',ev=>{
   t.value='';focusK='cTag';focusP=0;render();
 });
 document.addEventListener('click',ev=>{
-  const t=ev.target.closest('[data-act]');if(!t)return;
+  const t=ev.target.closest('[data-act]');
+  if(!t){if(S.menuOpen){S.menuOpen=false;render()}return}
   const a=t.getAttribute('data-act'),id=t.getAttribute('data-id');focusK=null;
+  if(S.menuOpen&&a!=='menu'&&a!=='showhost'){S.menuOpen=false}
   switch(a){
-    case'tab':S.tab=id;S.detail=null;S.create=false;break;
-    case'open':S.detail=parseInt(id);S._detailAnim=true;setTimeout(()=>{S._detailAnim=false},350);break;case'back':S.detail=null;break;
+    case'tab':if(S.tab==='home'&&id!=='home'){S.query='';S.filter='all'}S.tab=id;S.detail=null;S.create=false;break;
+    case'open':S.detail=parseInt(id);S._detailAnim=true;setTimeout(()=>{S._detailAnim=false},350);break;case'back':S.detail=null;if(S.tab==='home'){S.query='';S.filter='all'}break;
     case'join':join(parseInt(id),ev);return;
     case'delete':delete S.joined[parseInt(id)];S.userEvents=S.userEvents.filter(e=>e.id!==parseInt(id));S.detail=null;toast('Deleted');break;
     case'filter':S.filter=id;break;case'clear':S.query='';break;
-    case'create':S.create=true;S._createAnim=true;setTimeout(()=>{S._createAnim=false},300);break;case'closeCreate':S.create=false;break;
-    case'publish':if(!S.cTitle.trim()||!S.cDesc.trim())return;S.publishing=true;render();setTimeout(()=>{const nid=2000+S.userEvents.length;const dd=S.cDate?new Date(S.cDate+'T12:00'):null;const days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];const mons=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];const whenStr=dd?days[dd.getDay()]+', '+mons[dd.getMonth()]+' '+dd.getDate():'TBD';const hm=S.cTime?S.cTime.split(':'):null;let timeStr='TBD';if(hm){let h=parseInt(hm[0]),m=hm[1],ap=S.cAmpm||'AM';if(h===0)h=12;else if(h>12)h-=12;timeStr=h+(m!=='00'?':'+m:'')+' '+ap;}S.userEvents.unshift({id:nid,title:S.cTitle.trim(),host:'Camila Lee',meta:'CS · 2027',cat:S.cCat,when:whenStr,time:timeStr,end:'',loc:S.cLoc.trim()||'Campus',cap:S.cCap,filled:1,today:false,week:true,weekend:false,desc:S.cDesc.trim(),tags:[],mine:true});S.joined[nid]=true;S.publishing=false;S.create=false;S.tab='calendar';S.cTitle='';S.cDate='';S.cTime='';S.cLoc='';S.cCap=8;S.cCat='Social';S.cDesc='';toast('Published');render()},900);return;
-    case'capinc':S.cCap=Math.min(50,S.cCap+1);break;case'capdec':S.cCap=Math.max(2,S.cCap-1);break;case'ampm':S.cAmpm=id;break;case'setcat':S.cCat=id;break;case'rmtag':S.cTags.splice(parseInt(id),1);break;case'showhost':S.hostPopup=parseInt(id);break;case'closehost':S.hostPopup=null;break;
+    case'create':S.create=true;S._createAnim=true;setTimeout(()=>{S._createAnim=false},300);break;case'closeCreate':S.create=false;if(S.tab==='home'){S.query='';S.filter='all'}break;
+    case'publish':if(!S.cTitle.trim()||!S.cDesc.trim()||!S.cDate||!S.cTime||!S.cLoc.trim()){toast('All fields must be entered');return}S.publishing=true;render();setTimeout(()=>{const nid=2000+S.userEvents.length;const dd=S.cDate?new Date(S.cDate+'T12:00'):null;const days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];const mons=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];const whenStr=dd?days[dd.getDay()]+', '+mons[dd.getMonth()]+' '+dd.getDate():'TBD';const hm=S.cTime?S.cTime.split(':'):null;let timeStr='TBD';if(hm){let h=parseInt(hm[0]),m=hm[1],ap=S.cAmpm||'AM';if(h===0)h=12;else if(h>12)h-=12;timeStr=h+(m!=='00'?':'+m:'')+' '+ap;}S.userEvents.unshift({id:nid,title:S.cTitle.trim(),host:'Camila Lee',meta:'CS · 2027',cat:S.cCat,when:whenStr,time:timeStr,end:'',loc:S.cLoc.trim()||'Campus',cap:S.cCap,filled:1,today:false,week:true,weekend:false,desc:S.cDesc.trim(),tags:[],mine:true});S.joined[nid]=true;S.publishing=false;S.create=false;S.tab='calendar';S.query='';S.filter='all';S.cTitle='';S.cDate='';S.cTime='';S.cLoc='';S.cCap=8;S.cCat='Social';S.cDesc='';toast('Published');render()},900);return;
+    case'opencp':S.cpOpen=true;break;
+    case'closecp':S.cpOpen=false;break;
+    case'donecp':{const cCol=document.querySelector('[data-wheel="cpCap"]');if(cCol)S.cCap=Math.round(cCol.scrollTop/DP_H);S.cpOpen=false;break}
+    case'ampm':S.cAmpm=id;break;case'setcat':S.cCat=id;break;case'rmtag':S.cTags.splice(parseInt(id),1);break;case'showhost':S.hostPopup=parseInt(id);S.menuOpen=false;break;case'closehost':S.hostPopup=null;break;case'menu':S.menuOpen=!S.menuOpen;break;case'closemenu':S.menuOpen=false;break;
+    case'opendp':{if(S.cDate){const[y,m,d]=S.cDate.split('-').map(Number);S.dpYear=y;S.dpMonth=m;S.dpDay=d}else{const t=new Date();S.dpMonth=t.getMonth()+1;S.dpDay=t.getDate();S.dpYear=t.getFullYear()}S.dpOpen=true;break}
+    case'closedp':S.dpOpen=false;break;
+    case'donedp':{const mCol=document.querySelector('[data-wheel="dpMonth"]'),dCol=document.querySelector('[data-wheel="dpDay"]'),yCol=document.querySelector('[data-wheel="dpYear"]');const y0=new Date().getFullYear();if(mCol)S.dpMonth=Math.round(mCol.scrollTop/DP_H)+1;if(yCol)S.dpYear=y0+Math.round(yCol.scrollTop/DP_H);const dim=daysInMonth(S.dpMonth,S.dpYear);if(dCol)S.dpDay=Math.min(dim,Math.round(dCol.scrollTop/DP_H)+1);const pad=n=>String(n).padStart(2,'0');S.cDate=`${S.dpYear}-${pad(S.dpMonth)}-${pad(S.dpDay)}`;S.dpOpen=false;break}
+    case'opentp':{if(S.cTime){const[h,m]=S.cTime.split(':').map(Number);let h12=h%12;if(h12===0)h12=12;S.tpHour=h12;S.tpMinute=Math.round(m/15)*15%60;S.tpAmpm=S.cAmpm||(h>=12?'PM':'AM')}else{S.tpHour=9;S.tpMinute=0;S.tpAmpm=S.cAmpm||'AM'}S.tpOpen=true;break}
+    case'closetp':S.tpOpen=false;break;
+    case'donetp':{const hCol=document.querySelector('[data-wheel="tpHour"]'),miCol=document.querySelector('[data-wheel="tpMinute"]'),apCol=document.querySelector('[data-wheel="tpAmpm"]');if(hCol)S.tpHour=Math.round(hCol.scrollTop/DP_H)+1;if(miCol)S.tpMinute=Math.round(miCol.scrollTop/DP_H)*15;if(apCol)S.tpAmpm=Math.round(apCol.scrollTop/DP_H)===1?'PM':'AM';let h24=S.tpHour%12;if(S.tpAmpm==='PM')h24+=12;const pad=n=>String(n).padStart(2,'0');S.cTime=`${pad(h24)}:${pad(S.tpMinute)}`;S.cAmpm=S.tpAmpm;S.tpOpen=false;break}
     case'zi':setZoom(1);return;case'zo':setZoom(-1);return;case'zf':setZoom('fit');return;
   }
   render();
@@ -460,6 +542,13 @@ document.addEventListener('touchend',ev=>{
 let rz;window.addEventListener('resize',()=>{if(S.zoom!=='fit')return;clearTimeout(rz);rz=setTimeout(render,120)});
 setTimeout(()=>{S.splashFade=true;render()},2000);
 setTimeout(()=>{S.splash=false;render()},2500);
+
+// Python bridge wiring (pywebview). Proves JS can call into main.py's Api class.
+// Only fires when running inside the pywebview window, not a plain browser tab.
+window.addEventListener('pywebviewready', async () => {
+  const res = await window.pywebview.api.ping('hello from JS');
+  console.log('[pywebview]', res);
+});
 </script>
 </body>
 </html>
